@@ -14,12 +14,23 @@ const server = http.createServer((req, resp) => {
   switch(req.url) {
     case '/':
       path += '9_1.html';
+      resp.statusCode = 200;
       break;
     case '/page2':
       path += '9_2.html';
+      resp.statusCode = 200;
       break;
+
+    // redirect
+    case '/page2-me':
+      resp.statusCode = 301;
+      resp.setHeader('Location', '/page2');
+      resp.end();
+      break;
+
     default:
       path += 'error_404.html';
+      resp.statusCode = 404;
       break;
   }
 
