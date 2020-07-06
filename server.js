@@ -7,6 +7,12 @@ const server = http.createServer((req, resp) => {
   const num = _.random(0, 30);  // rand num
   console.log(num);
 
+  var greet = _.once(() => {
+    console.log('BROOOOO');
+  });
+
+  greet();
+  greet(); // even when called twice it only is done once, due to _.once() function from lodash
 
   //console.log(resp);
 
