@@ -4,7 +4,7 @@ const express = require('express');
 const app = express(); //instantiate
 
 // register view engine => EJS
-app.set('viewEngine', 'ejs');  // we're setting view engine to search the views folder for templates
+app.set('view engine', 'ejs');  // we're setting view engine to search the views folder for templates
 
 
 // listen for requests
