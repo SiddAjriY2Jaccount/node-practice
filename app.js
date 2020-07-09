@@ -1,15 +1,21 @@
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 //express app
 const app = express(); //instantiate
 
+//connect to MongoDB Atlas
+// Listening to Requests at Port 3000 only upon async task of connecting to DB is done
+const dbURI = 'mongodb+srv://y2jsiddajri:123@nodepractice.figrx.mongodb.net/node-tuts?retryWrites=true&w=majority';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then((result) => app.listen(3000))
+  .catch((err) => console.log(err));
+
+
 // register view engine => EJS
 app.set('view engine', 'ejs');  // we're setting view engine to search the views folder for templates
 
-
-// listen for requests
-app.listen(3000);
 
 //middleware => static files
 app.use(express.static('public'));
