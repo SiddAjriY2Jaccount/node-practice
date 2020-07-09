@@ -83,7 +83,7 @@ app.get('/all-blogs', (req, res) => {
 });
 
 app.get('/single-blog', (req, res) => {
-  Blog.findById('5ea99b49b8531f40c0fde689')
+  Blog.findById('5f07704cef9c3741145d6c86')
     .then(result => {
       res.send(result);
     })
@@ -93,25 +93,41 @@ app.get('/single-blog', (req, res) => {
 });
 
 
-// new method with express and EJS
+// Index page -> new method with express and EJS
 app.get('/', (req, res) => {
+  /*
   const blogs = [
     {title: 'Supes', snippet: 'Lorem ipsum dolor sit amet consectetur'},
     {title: 'The Boys', snippet: 'Lorem ipsum dolor sit amet consectetur'},
     {title: 'Urban vs Starr', snippet: 'Lorem ipsum dolor sit amet consectetur'},
   ];
   res.render('index', { title: 'Home', blogs });
+  */
+ res.redirect('/blogs');
 });
 
 
-app.get('/about', (req, res) => {
-  res.render('about', { title: 'About' });
+// Blogs -> Routes
+app.get('/blogs', (req, res) => {
+  Blog.find().sort({ createdAt: -1 })
+    .then((result) => {
+      res.render('index', { blogs: result, title: 'All blogs' });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
-
 
 app.get('/blogs/create', (req, res) => {
   res.render('create', { title: 'Create a new blog' });
 });
+
+
+// About page route
+app.get('/about', (req, res) => {
+  res.render('about', { title: 'About' });
+});
+
 
 
 // 404 page
