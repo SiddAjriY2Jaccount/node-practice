@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const Blog = require('./models/blog');
+
 
 //express app
 const app = express(); //instantiate
@@ -53,6 +55,44 @@ app.use((req, res) => {
 });
 */
 
+// mongoose and mongo testing routes
+app.get('/add-blog', (req, res) => {
+  const blog = new Blog({
+    title: 'The SEVEN :O',
+    snippet: 'Stronger than ever',
+    body: 'Homelander is occupied with his son but new recruit Stromfront and silent assassin Black Noir are wreaking havoc'
+  })
+
+  blog.save()
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.get('/all-blogs', (req, res) => {
+  Blog.find()
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.get('/single-blog', (req, res) => {
+  Blog.findById('5ea99b49b8531f40c0fde689')
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+
 // new method with express and EJS
 app.get('/', (req, res) => {
   const blogs = [
@@ -63,13 +103,16 @@ app.get('/', (req, res) => {
   res.render('index', { title: 'Home', blogs });
 });
 
+
 app.get('/about', (req, res) => {
   res.render('about', { title: 'About' });
 });
 
+
 app.get('/blogs/create', (req, res) => {
   res.render('create', { title: 'Create a new blog' });
 });
+
 
 // 404 page
 app.use((req, res) => {
