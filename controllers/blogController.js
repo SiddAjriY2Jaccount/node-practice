@@ -4,7 +4,7 @@ const Blog = require('../models/blog');
 const blog_index = (req, res) => {
     Blog.find().sort({ createdAt: -1 })
       .then((result) => {
-        res.render('index', { blogs: result, title: 'All blogs' });
+        res.render('blogs/index', { blogs: result, title: 'All blogs' });
       })
       .catch((err) => {
         console.log(err);
@@ -25,14 +25,14 @@ const blog_create_post = (req, res) => {
 } 
 
 const blog_create_get = (req, res) => {
-    res.render('create', { title: 'Create a new blog' });
+    res.render('blogs/create', { title: 'Create a new blog' });
 }
 
 const blog_details = (req, res) => {
     const id = req.params.id;   //to fetch specific route param as mentioned above (Eg- :id)
     Blog.findById(id)
         .then(result => {
-        res.render('details', { blog: result, title: result.title });
+        res.render('blogs/details', { blog: result, title: result.title });
         })
         .catch(err => {
         console.log(err);
