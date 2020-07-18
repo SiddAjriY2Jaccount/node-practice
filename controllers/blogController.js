@@ -7,7 +7,7 @@ const blog_index = (req, res) => {
         res.render('blogs/index', { blogs: result, title: 'All blogs' });
       })
       .catch((err) => {
-        console.log(err);
+        res.status(404).render('404', { title: '404' });
       });
 }
 
@@ -17,10 +17,10 @@ const blog_create_post = (req, res) => {
 
     blog.save()
         .then((result) => {
-        res.redirect('/blogs');
+            res.redirect('/blogs');
         })
         .catch((err) => {
-        console.log(err);
+            res.status(404).render('404', { title: '404' });
         })
 } 
 
@@ -32,10 +32,10 @@ const blog_details = (req, res) => {
     const id = req.params.id;   //to fetch specific route param as mentioned above (Eg- :id)
     Blog.findById(id)
         .then(result => {
-        res.render('blogs/details', { blog: result, title: result.title });
+            res.render('blogs/details', { blog: result, title: result.title });
         })
         .catch(err => {
-        console.log(err);
+            res.status(404).render('404', { title: '404' });
         })
 }
 
@@ -45,10 +45,10 @@ const blog_delete = (req, res) => {
     Blog.findByIdAndDelete(id)
         .then(result => {
         // cannot render here because this was an AJAX request, so response needs to be JSON encoded
-        res.json({ redirect: '/blogs' });
+            res.json({ redirect: '/blogs' });
         })
         .catch(err => {
-        console.log(err)
+            res.status(404).render('404', { title: '404' });
         });
 }
 
