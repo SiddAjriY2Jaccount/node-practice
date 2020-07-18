@@ -134,6 +134,20 @@ app.post('/blogs', (req, res) => {
 })
 
 
+// GET request to access specific blog using route params
+app.get('/blogs/:id', (req, res) => {
+  const id = req.params.id;   //to fetch specific route param as mentioned above (Eg- :id)
+  Blog.findById(id)
+    .then(result => {
+      res.render('details', { blog: result, title: result.title });
+    })
+    .catch(err => {
+      console.log(err);
+    })
+})
+
+
+
 app.get('/blogs/create', (req, res) => {
   res.render('create', { title: 'Create a new blog' });
 });
