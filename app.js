@@ -146,6 +146,19 @@ app.get('/blogs/:id', (req, res) => {
     })
 })
 
+// Handle DELETE request from frontend to delete a blog post
+app.delete('/blogs/:id', (req, res) => {
+  const id = req.params.id;
+
+  Blog.findById(id)
+    .then(result => {
+      // cannot render here because this was an AJAX request, so response needs to be JSON encoded
+      res.json({ redirect: '/blogs' });
+    })
+    .catch(err => {
+      console.log(err)
+    });
+})
 
 
 app.get('/blogs/create', (req, res) => {
