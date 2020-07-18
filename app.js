@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
-const Blog = require('./models/blog');
+const mongoose = require('mongoose');  // for MongoDB
+const blogRoutes = require('./routes/blogRoutes') //import from blogRoutes
 
 
 //express app
@@ -108,69 +108,14 @@ app.get('/', (req, res) => {
 });
 
 
-// Blogs -> Routes
-app.get('/blogs', (req, res) => {
-  Blog.find().sort({ createdAt: -1 })
-    .then((result) => {
-      res.render('index', { blogs: result, title: 'All blogs' });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-// POST request to create a blog, hit submit and then redirect to /blogs page
-app.post('/blogs', (req, res) => {
-  //console.log(req.body);
-  const blog = new Blog(req.body);
-
-  blog.save()
-    .then((result) => {
-      res.redirect('/blogs');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-})
-
-
-// GET request to access specific blog using route params
-app.get('/blogs/:id', (req, res) => {
-  const id = req.params.id;   //to fetch specific route param as mentioned above (Eg- :id)
-  Blog.findById(id)
-    .then(result => {
-      res.render('details', { blog: result, title: result.title });
-    })
-    .catch(err => {
-      console.log(err);
-    })
-})
-
-// Handle DELETE request from frontend to delete a blog post
-app.delete('/blogs/:id', (req, res) => {
-  const id = req.params.id;
-
-  Blog.findById(id)
-    .then(result => {
-      // cannot render here because this was an AJAX request, so response needs to be JSON encoded
-      res.json({ redirect: '/blogs' });
-    })
-    .catch(err => {
-      console.log(err)
-    });
-})
-
-
-app.get('/blogs/create', (req, res) => {
-  res.render('create', { title: 'Create a new blog' });
-});
+// retrieve all blog routes from blogroutes.js
+app.use('/blogs', blogRoutes)
 
 
 // About page route
 app.get('/about', (req, res) => {
   res.render('about', { title: 'About' });
 });
-
 
 
 // 404 page
