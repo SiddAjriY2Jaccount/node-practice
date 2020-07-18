@@ -21,6 +21,7 @@ app.set('view engine', 'ejs');  // we're setting view engine to search the views
 
 //middleware => static files
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true })); //passes all the urlencoded data and makes it accessible as an object
 app.use(morgan('dev')); //middleware -> morgan
 
 
@@ -117,6 +118,21 @@ app.get('/blogs', (req, res) => {
       console.log(err);
     });
 });
+
+// POST request to create a blog, hit submit and then redirect to /blogs page
+app.post('/blogs', (req, res) => {
+  //console.log(req.body);
+  const blog = new Blog(req.body);
+
+  blog.save()
+    .then((result) => {
+      res.redirect('/blogs');
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
+
 
 app.get('/blogs/create', (req, res) => {
   res.render('create', { title: 'Create a new blog' });
